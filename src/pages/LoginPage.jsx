@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -9,6 +11,13 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [user, authLoading] = useAuthState(auth);
+
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,6 +33,18 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
+        <LoadingIndicator />
+      </div>
+    );
+  }
+
+  if (user) {
+    return null;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
