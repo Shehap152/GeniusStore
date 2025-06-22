@@ -7,6 +7,9 @@ import PaymentPage from './pages/PaymentPage';
 import PaymentInstructionsPage from './pages/PaymentInstructionsPage';
 import SuccessPage from './pages/SuccessPage';
 import AdminDashboard from './pages/AdminDashboard';
+import LoginPage from './pages/LoginPage';
+import UnauthorizedPage from './pages/UnauthorizedPage';
+import PrivateRoute from './routes/PrivateRoute';
 
 const AppRoutes = () => (
   <Routes>
@@ -16,8 +19,17 @@ const AppRoutes = () => (
       <Route path="/payment" element={<PaymentPage />} />
       <Route path="/payment-instructions/:method" element={<PaymentInstructionsPage />} />
       <Route path="/success" element={<SuccessPage />} />
-      <Route path="/admin" element={<AdminDashboard />} />
     </Route>
+    <Route path="/login" element={<LoginPage />} />
+    <Route path="/unauthorized" element={<UnauthorizedPage />} />
+    <Route
+      path="/dashboard"
+      element={
+        <PrivateRoute>
+          <AdminDashboard />
+        </PrivateRoute>
+      }
+    />
   </Routes>
 );
 
