@@ -7,7 +7,8 @@ const firebaseConfig = {
   apiKey: "AIzaSyCKF7qF1bq47GPlueo8VLTiUN494MZkzn0",
   authDomain: "topupstore-510c8.firebaseapp.com",
   projectId: "topupstore-510c8",
-  storageBucket: "topupstore-510c8.firebasestorage.app",
+  // storageBucket: "topupstore-510c8.firebasestorage.app",
+  storageBucket: "topupstore-510c8.appspot.com",
   messagingSenderId: "1032699230069",
   appId: "1:1032699230069:web:d9efa38903c479eaf9053c",
   measurementId: "G-JVL7CR5P7F"
