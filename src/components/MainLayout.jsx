@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Footer from './Footer';
 import DarkModeToggle from './DarkModeToggle';
+import ContactButton from './ContactButton';
 
 const MainLayout = () => {
   return (
@@ -10,6 +11,7 @@ const MainLayout = () => {
       <main className="flex-grow pb-20">
         <Outlet />
       </main>
+      <ContactButton />
       <Footer />
     </div>
   );

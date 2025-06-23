@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 const SEO = ({ title, description, keywords, ogImage, ogUrl }) => {
-  const siteName = "TopUp Store";
+  const siteName = "Genius Store";
   const fullTitle = title ? `${title} | ${siteName}` : `${siteName} - Instant Game Credits`;
 
   return (

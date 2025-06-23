@@ -1,11 +1,11 @@
 import React from 'react';
-import { FaFacebook, FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
+import { FaFacebook, FaYoutube } from 'react-icons/fa';
+import { FaTelegramPlane } from 'react-icons/fa';
 
 const socialLinks = [
-  { name: 'Facebook', icon: <FaFacebook />, url: 'https://facebook.com' },
-  { name: 'Instagram', icon: <FaInstagram />, url: 'https://instagram.com' },
-  { name: 'TikTok', icon: <FaTiktok />, url: 'https://tiktok.com' },
-  { name: 'YouTube', icon: <FaYoutube />, url: 'https://youtube.com' },
+  { name: 'Facebook', icon: <FaFacebook />, url: 'https://www.facebook.com/share/16R2bBKjxd/' },
+  { name: 'YouTube', icon: <FaYoutube />, url: 'https://youtube.com/@user-geniuspes?si=48nRLH-8-NueOhy6' },
+  { name: 'Telegram', icon: <FaTelegramPlane />, url: 'http://t.me/Geniuspes1' },
 ];
 
 const Footer = () => {
@@ -13,7 +13,7 @@ const Footer = () => {
     <footer className="bg-white dark:bg-gray-900/50 w-full mt-auto">
       <div className="max-w-6xl mx-auto py-8 px-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
         <p className="text-gray-500 dark:text-gray-400">
-          &copy; {new Date().getFullYear()} TopUp Store. All Rights Reserved.
+          &copy; {new Date().getFullYear()} Genius Store. All Rights Reserved.
         </p>
         <div className="flex space-x-6">
           {socialLinks.map((link) => (
