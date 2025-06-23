@@ -276,7 +276,7 @@ const AdminDashboard = () => {
   return (
     <div className="flex bg-gray-100 dark:bg-gray-900 min-h-screen">
       <Sidebar />
-      <main className="flex-1 ml-64 p-4 sm:p-6 lg:p-8">
+      <main className="flex-1 ml-48 p-4 sm:p-6 lg:p-8">
         <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">Dashboard</h1>
         
         {/* Reporting Section */}

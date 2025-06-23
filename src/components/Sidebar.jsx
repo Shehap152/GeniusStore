@@ -19,7 +19,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 h-screen bg-white dark:bg-gray-800 shadow-md fixed top-0 left-0 flex flex-col">
+    <div className="w-48 h-screen bg-white dark:bg-gray-800 shadow-md fixed top-0 left-0 flex flex-col">
       <div>
         <div className="p-4">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">TopUp Store</h1>
