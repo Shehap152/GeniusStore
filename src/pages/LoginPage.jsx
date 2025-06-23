@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import LoadingIndicator from '../components/LoadingIndicator';
 
 const LoginPage = () => {
@@ -13,11 +13,10 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [user, authLoading] = useAuthState(auth);
 
-  useEffect(() => {
-    if (user) {
-      navigate('/dashboard');
-    }
-  }, [user, navigate]);
+  // ✅ لو مسجل بالفعل، روح على الداشبورد تلقائيًا
+  if (user) {
+    return <Navigate to="/dashboard" />;
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -42,20 +41,13 @@ const LoginPage = () => {
     );
   }
 
-  if (user) {
-    return null;
-  }
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <h1 className="text-2xl font-bold text-center text-gray-800 dark:text-gray-100">Admin Login</h1>
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label
-              htmlFor="email"
-              className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
               Email
             </label>
             <input
@@ -68,10 +60,7 @@ const LoginPage = () => {
             />
           </div>
           <div>
-            <label
-              htmlFor="password"
-              className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
               Password
             </label>
             <input
@@ -97,4 +86,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage; 
+export default LoginPage;
