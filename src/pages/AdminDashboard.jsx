@@ -10,7 +10,7 @@ import Sidebar from '../components/Sidebar';
 import RevenueChart from '../components/RevenueChart';
 import ConfirmationModal from '../components/ConfirmationModal';
 import FAQManager from '../components/FAQManager';
-import { FaPlus, FaEdit, FaTrash, FaChevronDown } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaChevronDown, FaBars, FaTimes } from 'react-icons/fa';
 import { subscribeToTestimonialsByStatus, approveTestimonial, deleteTestimonial } from '../logic/testimonialService';
 import { subscribeToPackages, savePackage, deletePackage } from '../logic/packageService';
 import PackageManager from '../components/PackageManager';
@@ -69,6 +69,7 @@ const AdminDashboard = () => {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isTestimonialsExpanded, setIsTestimonialsExpanded] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const isInitialLoad = useRef(true);
 
@@ -275,18 +276,45 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex bg-gray-100 dark:bg-gray-900 min-h-screen">
-      <Sidebar />
-      <main className="flex-1 ml-48 p-4 sm:p-6 lg:p-8">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">Dashboard</h1>
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+      
+      {/* Sidebar - Hidden on tablet and mobile, shown on desktop */}
+      <div className={`fixed top-0 left-0 z-50 h-full transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+      } lg:relative lg:translate-x-0`}>
+        <Sidebar onClose={() => setIsMobileMenuOpen(false)} />
+      </div>
+      
+      <main className="flex-1 lg:ml-48 p-4 sm:p-6 lg:p-8 w-full">
+        {/* Mobile Header */}
+        <div className="flex items-center justify-between mb-6 lg:hidden">
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-md"
+          >
+            <FaBars className="w-6 h-6 text-gray-700 dark:text-gray-200" />
+          </button>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Dashboard</h1>
+          <div className="w-10"></div> {/* Spacer for centering */}
+        </div>
+        
+        {/* Desktop Header */}
+        <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100 hidden lg:block">Dashboard</h1>
         
         {/* Reporting Section */}
         <div className="mb-8">
             <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Reports</h2>
-            <div className="flex flex-wrap gap-4">
-                <button onClick={() => setDateRange('day')} className={`px-4 py-2 rounded-lg shadow-sm ${dateRange === 'day' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800'}`}>Today</button>
-                <button onClick={() => setDateRange('week')} className={`px-4 py-2 rounded-lg shadow-sm ${dateRange === 'week' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800'}`}>This Week</button>
-                <button onClick={() => setDateRange('month')} className={`px-4 py-2 rounded-lg shadow-sm ${dateRange === 'month' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800'}`}>This Month</button>
-                <button onClick={() => setDateRange('')} className={`px-4 py-2 rounded-lg shadow-sm ${!dateRange ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800'}`}>All Time</button>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+                <button onClick={() => setDateRange('day')} className={`w-full px-4 py-2 rounded-lg shadow-sm ${dateRange === 'day' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800'}`}>Today</button>
+                <button onClick={() => setDateRange('week')} className={`w-full px-4 py-2 rounded-lg shadow-sm ${dateRange === 'week' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800'}`}>This Week</button>
+                <button onClick={() => setDateRange('month')} className={`w-full px-4 py-2 rounded-lg shadow-sm ${dateRange === 'month' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800'}`}>This Month</button>
+                <button onClick={() => setDateRange('')} className={`w-full px-4 py-2 rounded-lg shadow-sm ${!dateRange ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800'}`}>All Time</button>
             </div>
         </div>
 

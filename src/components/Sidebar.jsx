@@ -2,8 +2,9 @@ import React from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
 
-const Sidebar = () => {
+const Sidebar = ({ onClose }) => {
   const navigate = useNavigate();
   // In the future, you can use NavLink from react-router-dom for active styling
   const linkClasses = "flex items-center px-4 py-2 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700";
@@ -19,11 +20,22 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-48 h-screen bg-white dark:bg-gray-800 shadow-md fixed top-0 left-0 flex flex-col">
+    <div className="w-48 h-screen bg-white dark:bg-gray-800 shadow-md flex flex-col lg:fixed lg:top-0 lg:left-0">
       <div>
-        <div className="p-4">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Genius Store</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Admin Panel</p>
+        <div className="p-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Genius Store</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Admin Panel</p>
+          </div>
+          {/* Close button for mobile */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700"
+            >
+              <FaTimes className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+            </button>
+          )}
         </div>
         <nav className="p-4">
           <ul>
