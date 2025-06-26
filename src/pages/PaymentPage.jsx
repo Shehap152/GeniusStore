@@ -4,6 +4,7 @@ import { submitOrder } from '../logic/orderService';
 import SEO from '../components/SEO';
 import LoadingIndicator from '../components/LoadingIndicator';
 import { FaShieldAlt, FaIdCard, FaMobileAlt, FaWallet, FaUser, FaEnvelope } from 'react-icons/fa';
+import * as yup from 'yup';
 
 const paymentOptions = [
   { value: 'Instapay', label: 'Instapay' },
@@ -12,6 +13,20 @@ const paymentOptions = [
   { value: 'Orange', label: 'Orange Cash' },
 ];
 
+const schema = yup.object().shape({
+  name: yup.string().trim().min(2, 'Name too short').max(50, 'Name too long').required('Name is required'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+  gameId: yup.string().trim().max(30, 'Game ID too long').when('game', {
+    is: (val) => val !== 'PES',
+    then: (schema) => schema.required('Game ID is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  phone: yup.string().trim().matches(/^01[0-9]{9}$/, 'Invalid Egyptian phone number').required('Phone is required'),
+  paymentMethod: yup.string().required('Payment method is required'),
+});
+
+const sanitize = (str) => str.replace(/<[^>]*>?/gm, '').trim();
+
 const PaymentPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -19,6 +34,7 @@ const PaymentPage = () => {
   
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', gameId: '', phone: '', paymentMethod: 'Instapay' });
+  const [errors, setErrors] = useState({});
 
   if (!game || !selectedPackage) {
     return <div className="text-center mt-20 text-red-600">Missing game or package info. Please start from the home page.</div>;
@@ -32,19 +48,29 @@ const PaymentPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const orderData = {
-      game,
-      package: selectedPackage.name,
-      price: selectedPackage.price,
-      name: formData.name,
-      email: formData.email,
-      playerId: formData.gameId,
-      phone: formData.phone,
+    setErrors({});
+    const sanitizedData = {
+      name: sanitize(formData.name),
+      email: sanitize(formData.email),
+      gameId: sanitize(formData.gameId),
+      phone: sanitize(formData.phone),
       paymentMethod: formData.paymentMethod,
-      status: 'Pending Payment',
-      createdAt: new Date().toISOString(),
+      game,
     };
     try {
+      await schema.validate(sanitizedData, { abortEarly: false });
+      const orderData = {
+        game,
+        package: selectedPackage.name,
+        price: selectedPackage.price,
+        name: sanitizedData.name,
+        email: sanitizedData.email,
+        playerId: sanitizedData.gameId,
+        phone: sanitizedData.phone,
+        paymentMethod: sanitizedData.paymentMethod,
+        status: 'Pending Payment',
+        createdAt: new Date().toISOString(),
+      };
       const res = await submitOrder(orderData);
       setLoading(false);
       if (res.success) {
@@ -54,9 +80,15 @@ const PaymentPage = () => {
       } else {
         alert('Failed to submit order. Please try again.');
       }
-    } catch (e) {
+    } catch (err) {
       setLoading(false);
-      alert('Error submitting order.');
+      if (err.inner) {
+        const formErrors = {};
+        err.inner.forEach(e => { formErrors[e.path] = e.message; });
+        setErrors(formErrors);
+      } else {
+        alert('Error submitting order.');
+      }
     }
   };
 
@@ -98,21 +130,25 @@ const PaymentPage = () => {
             <div className="relative">
               <FaUser className="absolute top-3 left-3 text-gray-400" />
               <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required />
+              {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
             </div>
             <div className="relative">
               <FaEnvelope className="absolute top-3 left-3 text-gray-400" />
               <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
             </div>
             {/* Conditionally render Game ID input for non-PES games */}
             {game !== 'PES' && (
               <div className="relative">
                 <FaIdCard className="absolute top-3 left-3 text-gray-400" />
                 <input type="text" name="gameId" placeholder="Your Game ID" value={formData.gameId} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required={game !== 'PES'} />
+                {errors.gameId && <p className="text-red-500 text-xs mt-1">{errors.gameId}</p>}
               </div>
             )}
             <div className="relative">
               <FaMobileAlt className="absolute top-3 left-3 text-gray-400" />
               <input type="tel" name="phone" placeholder="Your Phone Number" value={formData.phone} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required />
+              {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
             </div>
             <div className="relative">
               <FaWallet className="absolute top-3 left-3 text-gray-400" />

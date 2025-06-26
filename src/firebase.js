@@ -2,17 +2,23 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-// TODO: Replace with your actual Firebase project configuration
+// Use environment variables for Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyCKF7qF1bq47GPlueo8VLTiUN494MZkzn0",
-  authDomain: "topupstore-510c8.firebaseapp.com",
-  projectId: "topupstore-510c8",
-  // storageBucket: "topupstore-510c8.firebasestorage.app",
-  storageBucket: "topupstore-510c8.appspot.com",
-  messagingSenderId: "1032699230069",
-  appId: "1:1032699230069:web:d9efa38903c479eaf9053c",
-  measurementId: "G-JVL7CR5P7F"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
+
+// Warn if any config is missing
+Object.entries(firebaseConfig).forEach(([key, value]) => {
+  if (!value) {
+    console.error(`Missing Firebase config for: ${key}`);
+  }
+});
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

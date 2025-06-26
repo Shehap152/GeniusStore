@@ -1,15 +1,39 @@
 import React, { useState } from 'react';
 import { FaEdit, FaTrash, FaChevronDown } from 'react-icons/fa';
+import * as yup from 'yup';
+
+const faqSchema = yup.object().shape({
+  question: yup.string().trim().min(5, 'Question too short').max(200, 'Question too long').required('Question is required'),
+  answer: yup.string().trim().min(5, 'Answer too short').max(1000, 'Answer too long').required('Answer is required'),
+});
+
+const sanitize = (str) => str.replace(/<[^>]*>?/gm, '').trim();
 
 const FAQManager = ({ faqs, onSave, onDelete }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [currentFaq, setCurrentFaq] = useState({ id: null, question: '', answer: '' });
+    const [errors, setErrors] = useState({});
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
-        onSave(currentFaq);
-        resetForm();
+        setErrors({});
+        const sanitizedFaq = {
+            ...currentFaq,
+            question: sanitize(currentFaq.question),
+            answer: sanitize(currentFaq.answer),
+        };
+        try {
+            await faqSchema.validate(sanitizedFaq, { abortEarly: false });
+            onSave(sanitizedFaq);
+            resetForm();
+        } catch (err) {
+            if (err.inner) {
+                const formErrors = {};
+                err.inner.forEach(e => { formErrors[e.path] = e.message; });
+                setErrors(formErrors);
+            }
+        }
     };
     
     const handleEdit = (faq) => {
