@@ -29,7 +29,7 @@ const OrderTable = ({ orders, onStatusChange, onDeleteClick, onRowClick }) => (
           <td className="px-4 py-2">{order.paymentMethod}</td>
           <td className="px-4 py-2">
             <span
-              className={`px-2 py-1 text-xs font-semibold rounded-full ${
+              className={`whitespace-nowrap px-2 py-1 text-xs font-semibold rounded-full ${
                 order.status === 'Completed'
                   ? 'bg-green-100 text-green-800'
                   : order.status === 'Awaiting Confirmation'
@@ -44,9 +44,9 @@ const OrderTable = ({ orders, onStatusChange, onDeleteClick, onRowClick }) => (
             {order.status === 'Completed' ? (
               <span className="text-sm font-semibold text-green-600 dark:text-green-400">Done</span>
             ) : (
-              <>
+              <div className="flex flex-col sm:flex-row gap-2 w-full">
                 <button
-                  className="px-2 py-1 bg-green-500 text-white rounded mr-2 text-xs hover:bg-green-600 transition"
+                  className="w-full px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600 transition"
                   onClick={(e) => {
                     e.stopPropagation();
                     onStatusChange(order.firestoreId, 'Completed');
@@ -55,7 +55,7 @@ const OrderTable = ({ orders, onStatusChange, onDeleteClick, onRowClick }) => (
                   Complete
                 </button>
                 <button
-                  className="px-2 py-1 bg-yellow-500 text-white rounded text-xs hover:bg-yellow-600 transition"
+                  className="w-full px-2 py-1 bg-yellow-500 text-white rounded text-xs hover:bg-yellow-600 transition"
                   onClick={(e) => {
                     e.stopPropagation();
                     onStatusChange(order.firestoreId, 'Pending Payment');
@@ -64,17 +64,17 @@ const OrderTable = ({ orders, onStatusChange, onDeleteClick, onRowClick }) => (
                 >
                   Pending
                 </button>
-              </>
+                <button
+                  className="w-full px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteClick(order);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             )}
-            <button
-              className="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition ml-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDeleteClick(order);
-              }}
-            >
-              Delete
-            </button>
           </td>
         </tr>
       ))}
