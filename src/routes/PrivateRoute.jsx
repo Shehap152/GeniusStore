@@ -4,8 +4,14 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import LoadingIndicator from '../components/LoadingIndicator';
 
+// TODO: In the future, consider using a roles array for more flexible access control
 const ADMIN_EMAIL = 'abdo.nasef.web@gmail.com';
 
+/**
+ * PrivateRoute protects admin-only routes.
+ * Only authenticated users with the admin email can access children.
+ * Others are redirected to login or unauthorized page.
+ */
 const PrivateRoute = ({ children }) => {
   const [user, loading, error] = useAuthState(auth);
 
@@ -27,6 +33,7 @@ const PrivateRoute = ({ children }) => {
     return <Navigate to="/login" />;
   }
 
+  // Only allow admin
   if (user.email !== ADMIN_EMAIL) {
     return <Navigate to="/unauthorized" />;
   }

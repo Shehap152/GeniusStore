@@ -1,6 +1,5 @@
 // emailjs-config.js
 
-
-export const serviceID = 'service_9qj72js';
-export const templateID = 'template_lg986nn';
-export const publicKey = 'lAEd-mzMwpHWEtsJt'; 
+export const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+export const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+export const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY; 
