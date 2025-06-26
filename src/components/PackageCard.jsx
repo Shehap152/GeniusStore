@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaShoppingCart, FaCoins, FaGem } from 'react-icons/fa';
+import { FaShoppingCart, FaCoins, FaGem, FaFutbol } from 'react-icons/fa';
 import { SiPubg } from 'react-icons/si';
 
 const GameIcon = ({ game }) => {
@@ -10,6 +10,8 @@ const GameIcon = ({ game }) => {
             return <FaGem className="text-cyan-400 text-4xl flex-shrink-0" />;
         case 'PES':
             return <FaCoins className="text-yellow-400 text-4xl flex-shrink-0" />;
+        case 'FIFA':
+            return <FaFutbol className="text-green-600 text-4xl flex-shrink-0" />;
         default:
             return <FaCoins className="text-gray-400 text-4xl flex-shrink-0" />;
     }
@@ -17,7 +19,7 @@ const GameIcon = ({ game }) => {
 
 const PackageCard = ({ name, price, onTopUp, game }) => {
   return (
-    <div className="flex flex-col bg-white/60 dark:bg-gray-800/60 p-6 rounded-xl border border-white/10 dark:border-gray-700/50 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+    <div className="flex flex-col bg-white/60 dark:bg-gray-800/60 p-6 rounded-xl border border-white/10 dark:border-gray-700/50 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 w-72 mx-auto">
       {/* Top section */}
       <div className="flex items-center gap-4 mb-5">
         <GameIcon game={game} />

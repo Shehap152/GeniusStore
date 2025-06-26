@@ -39,7 +39,7 @@ const SelectPackage = () => {
         description={`Get ${selectedGame} credits instantly with our competitive packages. Choose from a variety of options to recharge your account.`}
         keywords={`${selectedGame} topup, ${selectedGame} vouchers, game packages, buy ${selectedGame} credits`}
       />
-      <div className="w-full max-w-5xl text-center">
+      <div className="w-full max-w-5xl text-center relative">
         <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-4 animate-fade-in-down">
           <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
             Get Your {selectedGame} UC Now!
@@ -62,6 +62,15 @@ const SelectPackage = () => {
                         onTopUp={() => handleTopUp(pkg)}
                     />
                 ))}
+            </div>
+            <div className="flex justify-center w-full">
+              <button
+                onClick={() => navigate(-1)}
+                className="mt-8 flex items-center gap-2 px-6 py-2 bg-blue-600 text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition-all"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
+                Back
+              </button>
             </div>
         </div>
     </div>

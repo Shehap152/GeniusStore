@@ -111,4 +111,17 @@ export async function sendOrderCompletionEmail(order) {
     alert(`Failed to send completion email for order ${order.id}. Error: ${err.text}`);
     return { success: false, error: err };
   }
+}
+
+// Fetch a single order by orderId (human-readable)
+export async function getOrderByOrderId(orderId) {
+  const querySnapshot = await getDocs(collection(db, "orders"));
+  let foundOrder = null;
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    if (data.id === orderId) {
+      foundOrder = { ...data, firestoreId: doc.id };
+    }
+  });
+  return foundOrder;
 } 

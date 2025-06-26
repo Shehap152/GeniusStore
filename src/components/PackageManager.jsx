@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { FaEdit, FaTrash, FaChevronDown } from 'react-icons/fa';
 
-const availableGames = ['PUBG', 'Free Fire', 'PES']; // You can expand this list
+const availableGames = ['PUBG', 'Free Fire', 'PES', 'FIFA']; // You can expand this list
 
 const getUnitForGame = (game) => {
     switch (game) {
         case 'PUBG': return 'UC';
         case 'Free Fire': return 'Diamonds';
         case 'PES': return 'Coins';
+        case 'FIFA': return 'Points';
         default: return '';
     }
 };

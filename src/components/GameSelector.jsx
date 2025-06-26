@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Import the images from the src/assets/Image folder
 import pubgLogo from '../assets/Image/pubg.png';
 import freefireLogo from '../assets/Image/free_fire.png';
 import pesLogo from '../assets/Image/pes.png';
+import fifaLogo from '../assets/Image/FIFA.png';
 import placeholderLogo from '../assets/placeholder.png'; // A fallback
 
 // Map game names to the imported images
@@ -11,6 +13,7 @@ const gameImageMap = {
   'PUBG': pubgLogo,
   'Free Fire': freefireLogo,
   'PES': pesLogo,
+  'FIFA': fifaLogo,
 };
 
 const GameCard = ({ game, selected, onSelect, orderCount }) => {
@@ -42,17 +45,21 @@ const GameSelector = ({ value, onChange, orderCounts }) => {
     { name: 'PUBG' },
     { name: 'Free Fire' },
     { name: 'PES' },
+    { name: 'FIFA' },
   ];
   
   const [selected, setSelected] = useState(value || 'PUBG');
+  const navigate = useNavigate();
 
   const handleSelect = (game) => {
     setSelected(game);
     if (onChange) onChange(game);
+    // Navigate to the next page, e.g., '/select-package' with the selected game as state or param
+    navigate('/select-package', { state: { game } });
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full max-w-4xl">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full max-w-4xl">
       {games.map((game) => (
         <GameCard
           key={game.name}

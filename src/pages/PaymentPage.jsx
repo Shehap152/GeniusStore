@@ -61,17 +61,14 @@ const PaymentPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center p-4">
       <SEO title={`Payment for ${selectedPackage.name}`} description={`Complete your payment for ${selectedPackage.name} for the game ${game}.`} />
-      
       <div className="w-full max-w-4xl bg-white dark:bg-gray-800/50 rounded-2xl shadow-2xl backdrop-blur-lg p-8 grid md:grid-cols-2 gap-8">
-        
         {/* Left Side: Order Summary */}
         <div className="flex flex-col justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Confirm Your Order</h1>
             <p className="text-gray-600 dark:text-gray-300 mb-6">You're one step away from getting back in the game.</p>
-            
             <div className="bg-gray-100 dark:bg-gray-700/50 p-6 rounded-xl space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-gray-600 dark:text-gray-300">Game:</span>
@@ -106,10 +103,13 @@ const PaymentPage = () => {
               <FaEnvelope className="absolute top-3 left-3 text-gray-400" />
               <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required />
             </div>
-            <div className="relative">
-              <FaIdCard className="absolute top-3 left-3 text-gray-400" />
-              <input type="text" name="gameId" placeholder="Your Game ID" value={formData.gameId} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required />
-            </div>
+            {/* Conditionally render Game ID input for non-PES games */}
+            {game !== 'PES' && (
+              <div className="relative">
+                <FaIdCard className="absolute top-3 left-3 text-gray-400" />
+                <input type="text" name="gameId" placeholder="Your Game ID" value={formData.gameId} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required={game !== 'PES'} />
+              </div>
+            )}
             <div className="relative">
               <FaMobileAlt className="absolute top-3 left-3 text-gray-400" />
               <input type="tel" name="phone" placeholder="Your Phone Number" value={formData.phone} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required />
@@ -124,7 +124,6 @@ const PaymentPage = () => {
           <button type="submit" disabled={loading} className="w-full mt-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400">
             {loading ? <LoadingIndicator /> : `Proceed to Pay EGP ${selectedPackage.price}`}
           </button>
-          
           <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-700/50 rounded-lg text-center">
              <p className="text-sm text-gray-600 dark:text-gray-300">
                You will be redirected to the payment page to complete your purchase.
@@ -132,6 +131,13 @@ const PaymentPage = () => {
           </div>
         </form>
       </div>
+      <button
+        onClick={() => navigate(-1)}
+        className="mx-auto mt-8 flex items-center gap-2 px-6 py-2 bg-blue-600 text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition-all"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
+        Back
+      </button>
     </div>
   );
 };
