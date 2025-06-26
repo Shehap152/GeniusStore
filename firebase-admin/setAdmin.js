@@ -23,7 +23,7 @@ rl.question(" Enter the email of the user to make admin: ", (email) => {
       rl.close();
     })
     .catch((error) => {
-      console.error(" Error setting admin claim:", error.message);
-      rl.close();
+    console.error(" Error setting admin claim:", error.message);
+    rl.close();
     });
 });
