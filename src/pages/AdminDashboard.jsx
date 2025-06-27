@@ -137,6 +137,7 @@ const AdminDashboard = () => {
     }
   };
 
+  
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters(prev => ({ ...prev, [name]: value }));
@@ -275,31 +276,28 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="flex bg-gray-100 dark:bg-gray-900 min-h-screen">
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-      
-      {/* Sidebar - Hidden on tablet and mobile, shown on desktop */}
-      <div className={`fixed top-0 left-0 z-50 h-full transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:relative lg:translate-x-0`}>
-        <Sidebar onClose={() => setIsMobileMenuOpen(false)} />
-      </div>
-      
-      <main className="flex-1 lg:ml-48 p-4 sm:p-6 lg:p-8 w-full">
+    <div className="bg-gray-100 dark:bg-gray-900 min-h-screen">
+      {/* Top Header Bar */}
+      <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 shadow-md">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Genius Store</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Admin Panel</p>
+        </div>
+        <button
+          onClick={async () => {
+            const { signOut } = await import('firebase/auth');
+            const { auth } = await import('../firebase');
+            window.location.href = '/login';
+            await signOut(auth);
+          }}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow"
+        >
+          Log Out
+        </button>
+      </header>
+      <main className="mt-20 p-4 sm:p-6 lg:p-8 w-full">
         {/* Mobile Header */}
         <div className="flex items-center justify-between mb-6 lg:hidden">
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-md"
-          >
-            <FaBars className="w-6 h-6 text-gray-700 dark:text-gray-200" />
-          </button>
           <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Dashboard</h1>
           <div className="w-10"></div> {/* Spacer for centering */}
         </div>
