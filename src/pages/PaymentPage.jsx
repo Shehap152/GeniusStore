@@ -159,19 +159,19 @@ const PaymentPage = () => {
               {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
             </div>
             {/* Payment Method Button Group */}
-            <div className="flex gap-4 justify-between">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {paymentOptions.map(opt => (
                 <button
                   type="button"
                   key={opt.value}
                   onClick={() => setFormData(prev => ({ ...prev, paymentMethod: opt.value }))}
-                  className={`flex flex-col items-center flex-1 p-3 rounded-xl border-2 transition-all duration-200 bg-white dark:bg-gray-700/50 shadow-sm cursor-pointer
+                  className={`flex flex-col items-center p-3 rounded-xl border-2 transition-all duration-200 bg-white dark:bg-gray-700/50 shadow-sm cursor-pointer
                     ${formData.paymentMethod === opt.value ? `${opt.color} ring-2 ring-blue-400` : 'border-gray-200 dark:border-gray-600'}`}
-                  >
-                    <img src={opt.icon} alt={opt.label + ' icon'} className="w-10 h-10 object-contain" />
-                    <span className={`mt-2 font-semibold text-sm ${formData.paymentMethod === opt.value ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-200'}`}>{opt.label}</span>
-                  </button>
-                ))}
+                >
+                  <img src={opt.icon} alt={opt.label + ' icon'} className="w-10 h-10 object-contain" />
+                  <span className={`mt-2 font-semibold text-sm ${formData.paymentMethod === opt.value ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-200'}`}>{opt.label}</span>
+                </button>
+              ))}
             </div>
           </div>
           <button type="submit" disabled={loading} className="w-full mt-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400">
