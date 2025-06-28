@@ -3,14 +3,19 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { submitOrder } from '../logic/orderService';
 import SEO from '../components/SEO';
 import LoadingIndicator from '../components/LoadingIndicator';
-import { FaShieldAlt, FaIdCard, FaMobileAlt, FaWallet, FaUser, FaEnvelope } from 'react-icons/fa';
+import { FaShieldAlt, FaIdCard, FaMobileAlt, FaWallet, FaUser, FaEnvelope, FaUniversity, FaMoneyBillWave, FaMobile, FaCreditCard } from 'react-icons/fa';
+import { MdSimCard } from 'react-icons/md';
 import * as yup from 'yup';
+import instapayIcon from '../assets/Image/payment_icon/instapay.png';
+import vodafoneIcon from '../assets/Image/payment_icon/vodafone.png';
+import etisalatIcon from '../assets/Image/payment_icon/etisalat.png';
+import orangeIcon from '../assets/Image/payment_icon/orange.jpg';
 
 const paymentOptions = [
-  { value: 'Instapay', label: 'Instapay' },
-  { value: 'Vodafone', label: 'Vodafone Cash' },
-  { value: 'Etisalat', label: 'Etisalat Cash' },
-  { value: 'Orange', label: 'Orange Cash' },
+  { value: 'Instapay', label: 'Instapay', icon: instapayIcon, color: 'border-blue-600' },
+  { value: 'Vodafone', label: 'Vodafone Cash', icon: vodafoneIcon, color: 'border-red-600' },
+  { value: 'Etisalat', label: 'Etisalat Cash', icon: etisalatIcon, color: 'border-green-600' },
+  { value: 'Orange', label: 'Orange Cash', icon: orangeIcon, color: 'border-orange-500' },
 ];
 
 const schema = yup.object().shape({
@@ -127,17 +132,19 @@ const PaymentPage = () => {
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Enter Your Details</h2>
           <div className="space-y-4">
+            {/* Name */}
             <div className="relative">
               <FaUser className="absolute top-3 left-3 text-gray-400" />
               <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required />
               {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
             </div>
+            {/* Email */}
             <div className="relative">
               <FaEnvelope className="absolute top-3 left-3 text-gray-400" />
               <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required />
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
             </div>
-            {/* Conditionally render Game ID input for non-PES games */}
+            {/* Game ID */}
             {game !== 'PES' && (
               <div className="relative">
                 <FaIdCard className="absolute top-3 left-3 text-gray-400" />
@@ -145,25 +152,35 @@ const PaymentPage = () => {
                 {errors.gameId && <p className="text-red-500 text-xs mt-1">{errors.gameId}</p>}
               </div>
             )}
+            {/* Phone */}
             <div className="relative">
               <FaMobileAlt className="absolute top-3 left-3 text-gray-400" />
               <input type="tel" name="phone" placeholder="Your Phone Number" value={formData.phone} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600" required />
               {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
             </div>
-            <div className="relative">
-              <FaWallet className="absolute top-3 left-3 text-gray-400" />
-              <select name="paymentMethod" value={formData.paymentMethod} onChange={handleInputChange} className="w-full p-2 pl-10 border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600 appearance-none" required>
-                {paymentOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-              </select>
+            {/* Payment Method Button Group */}
+            <div className="flex gap-4 justify-between">
+              {paymentOptions.map(opt => (
+                <button
+                  type="button"
+                  key={opt.value}
+                  onClick={() => setFormData(prev => ({ ...prev, paymentMethod: opt.value }))}
+                  className={`flex flex-col items-center flex-1 p-3 rounded-xl border-2 transition-all duration-200 bg-white dark:bg-gray-700/50 shadow-sm cursor-pointer
+                    ${formData.paymentMethod === opt.value ? `${opt.color} ring-2 ring-blue-400` : 'border-gray-200 dark:border-gray-600'}`}
+                  >
+                    <img src={opt.icon} alt={opt.label + ' icon'} className="w-10 h-10 object-contain" />
+                    <span className={`mt-2 font-semibold text-sm ${formData.paymentMethod === opt.value ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-200'}`}>{opt.label}</span>
+                  </button>
+                ))}
             </div>
           </div>
           <button type="submit" disabled={loading} className="w-full mt-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400">
             {loading ? <LoadingIndicator /> : `Proceed to Pay EGP ${selectedPackage.price}`}
           </button>
           <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-700/50 rounded-lg text-center">
-             <p className="text-sm text-gray-600 dark:text-gray-300">
-               You will be redirected to the payment page to complete your purchase.
-             </p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              You will be redirected to the payment page to complete your purchase.
+            </p>
           </div>
         </form>
       </div>

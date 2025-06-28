@@ -16,6 +16,7 @@ const FAQManager = ({ faqs, onSave, onDelete }) => {
     const [errors, setErrors] = useState({});
 
     const handleFormSubmit = async (e) => {
+        console.log('FAQ form submitted');
         e.preventDefault();
         setErrors({});
         const sanitizedFaq = {
@@ -74,6 +75,9 @@ const FAQManager = ({ faqs, onSave, onDelete }) => {
                             className="p-2 border rounded bg-white dark:bg-gray-700 dark:border-gray-600"
                             required
                         />
+                        {errors.question && (
+                            <span className="text-red-500 text-sm">{errors.question}</span>
+                        )}
                         <textarea
                             placeholder="Answer"
                             value={currentFaq.answer}
@@ -81,6 +85,9 @@ const FAQManager = ({ faqs, onSave, onDelete }) => {
                             className="p-2 border rounded bg-white dark:bg-gray-700 dark:border-gray-600 h-24"
                             required
                         />
+                        {errors.answer && (
+                            <span className="text-red-500 text-sm">{errors.answer}</span>
+                        )}
                         <div className="flex gap-4">
                             <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                                 {editMode ? 'Update FAQ' : 'Add FAQ'}
