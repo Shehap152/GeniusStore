@@ -21,6 +21,7 @@ export function subscribeToFaqs(callback) {
     snapshot.forEach((doc) => {
       faqs.push({ id: doc.id, ...doc.data() });
     });
+    console.log('subscribeToFaqs (faqService) snapshot:', faqs); // Debug
     callback(faqs.sort((a, b) => a.question.localeCompare(b.question)));
   });
   return unsubscribe;
@@ -29,7 +30,9 @@ export function subscribeToFaqs(callback) {
 // Adds a new FAQ
 export async function addFaq(faq) {
     try {
+        console.log('addFaq called with:', faq); // Debug
         const docRef = await addDoc(faqCollection, faq);
+        console.log('addFaq success, docRef:', docRef); // Debug
         return { success: true, id: docRef.id };
     } catch (error) {
         console.error("Error adding FAQ: ", error);

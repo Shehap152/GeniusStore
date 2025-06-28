@@ -89,6 +89,7 @@ const AdminDashboard = () => {
     });
 
     const unsubscribeFaqs = subscribeToFaqs((faqsData) => {
+        console.log('subscribeToFaqs callback, faqsData:', faqsData); // Debug
         if (!isMounted) return;
         setFaqs(faqsData);
         if (loading) setLoading(false);
@@ -246,6 +247,7 @@ const AdminDashboard = () => {
   );
 
   const handleFaqSave = async (faq) => {
+      console.log('handleFaqSave called with:', faq); // Debug
       if (faq.id) {
           const { id, ...data } = faq;
           await updateFaq(id, data);
