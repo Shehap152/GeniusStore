@@ -80,7 +80,7 @@ const PaymentPage = () => {
       setLoading(false);
       if (res.success) {
         navigate(`/payment-instructions/${formData.paymentMethod.toLowerCase()}`, { 
-          state: { order: { ...orderData, firestoreId: res.firestoreId, orderId: res.orderId } } 
+          state: { order: { ...orderData, firestoreId: res.firestoreId, id: res.orderId } } 
         });
       } else {
         alert('Failed to submit order. Please try again.');

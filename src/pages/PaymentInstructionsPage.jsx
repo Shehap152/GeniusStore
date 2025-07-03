@@ -81,7 +81,7 @@ const PaymentInstructionsPage = () => {
     const fetchOrder = async () => {
       setLoading(true);
       setError('');
-      const foundOrder = await getOrderByOrderId(order.orderId);
+      const foundOrder = await getOrderByOrderId(order.id);
       if (!foundOrder) {
         setError('Order not found. Please check your Order ID or start again.');
       }
@@ -90,7 +90,7 @@ const PaymentInstructionsPage = () => {
     };
     fetchOrder();
     // Optionally, you could set up polling or a real-time listener here
-  }, [order.orderId]);
+  }, [order.id]);
 
   if (!paymentInfo) {
     return (
