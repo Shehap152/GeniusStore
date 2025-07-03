@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://genius-store-three.vercel.app/sitemap.xml
+Sitemap: https://genius-store-three.vercel.app/sitemap-v1.xml
